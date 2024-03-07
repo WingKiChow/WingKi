@@ -1,3 +1,6 @@
+import csv
+import datetime
+
 class Book:
     def __init__(self, title, author, isbn, quantity):
         self.title = title
@@ -127,6 +130,174 @@ class Library:
     def generate_reports(self):
         #Implement report generation logic here
         pass
+
+class LibraryManagementSystem:
+    def __init__(self):
+        self.books_file = 'books.csv'
+        self.patrons_file = 'patrons.csv'
+
+    def add_book(self, book_details):
+        with open(self.book_file, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(book_details)
+
+    def add_patron(self, patron_details):
+        with open(self.patrons_file, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(patron_details)
+
+    def display_books(self):
+        with open(self.books_file, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                print(row)
+
+    def display_patrons(self):
+        with open(self.patrons_file, 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                print(row)
+
+class User:
+    def __init__(self, username, role):
+        self.username = username
+        self.role = role
+
+class LibraryMangementSystem:
+    def __init__(self):
+        self.book_file = 'books.csv'
+        self.patrons_file = 'patrons.csv'
+        self.current_user = None
+
+    def login(self):
+        username = input("Enter your username: ")
+        role = input("Enter your role (librarian or adminstrator): ")
+        self.current_user = User(username, role)
+        print(f"Welcoms, {self.current_user.username}! Ypu are logged in as a {self.current_user.role}.")
+
+def main():
+    lms = LibraryMangementSystem
+
+    while True:
+        if not lms.current_user:
+            lms.login()
+
+        if lms.current_user:
+            print("\nLibrart Management Ststem Menu: ")
+            print("1, Add Book")
+            print("2. Add Patron")
+            print("3. Display Books")
+            print("4. Display Patrons")
+            print("5. Logout")
+
+            choice = input("Enter your choice: ")
+            if choice == "1":
+                if lms.current_user.role == "librarian":
+                    book_id = input("Enter book ID: ")
+                    title = input("Enter book title: ")
+                    author = input("Enter author name: ")
+                    lms.add_book([book_id, title, author])
+                    print("Book added successfully!")
+                else:
+                    print("You don't have permission to add book")
+
+            elif choice == "2":
+                if lms.current_user.role == "librarian":
+                    patron_id = input("Enter patron ID: ")
+                    name = input("Enter patron name: ")
+                    lms.add_patron([patron_id, name])
+                    print("Patron added successfully!")
+                else:
+                    print("You don't have permission to add patrons.")
+
+            elif choice == "3":
+                print("\nBooks: ")
+                lms.display_books()
+            elif choice == "4":
+                print ("\nPatrons: ")
+                lms.display_patrons()
+            elif choice == "5":
+                lms.current_user = None
+                print("Logged out successfully!")
+            else:
+                print("Invalid choice. Please try again.")
+if __name__ == "__main__":
+    main()
+class Role:
+    LIBRARIAN = "librarian"
+    ADMINISTRATOR = "administrator"
+
+class User:
+    def __init__(self, username, role):
+        self.username = username
+        self.role = role
+
+class LibraryManagementSystem:
+    def __init__(self):
+        self.books_file = "books.csv"
+        self.patrons_file = "patrons.csv"
+        self.current_user = None
+
+    def login(self):
+        username = input("Enter your username: ")
+        role = input("Enter your role (librarian or administrator): ")
+        self.current_user = User(username, role)
+        print(f"Welcaome, {self.current_user.username}! You are logged in as a {self.current_user.role}.")
+
+    def is_librarian(self):
+        return self.current_user.role == Role.LIBRARIAN if self.current_user else False
+
+    def is_administrator(self):
+        return self.current_user.role == Role.ADMINISTRATOR if self.current_user else False
+
+def main():
+    lms = LibraryMangementSystem
+
+    while True:
+        if not lms.current_user:
+            lms.login()
+
+        if lms.current_user:
+            print("\nLibrary Management System Menu: ")
+            print("1, Add Book")
+            print("2. Add Patron")
+            print("3. Display Books")
+            print("4. Display Patrons")
+            print("5. Logout")
+
+            choice = input("Enter your choice: ")
+            if choice == "1":
+                if lms.is_librarian():
+                    book_id = input("Enter book ID: ")
+                    title = input("Enter book title: ")
+                    author = input("Enter author name: ")
+                    lms.add_book([book_id, title, author])
+                    print("Book added successfully!")
+                else:
+                    print("You don't have permission to add book")
+
+            elif choice == "2":
+                if lms.is_librarian():
+                    patron_id = input("Enter patron ID: ")
+                    name = input("Enter patron name: ")
+                    lms.add_patron([patron_id, name])
+                    print("Patron added successfully!")
+                else:
+                    print("You don't have permission to add patrons.")
+
+            elif choice == "3":
+                print("\nBooks: ")
+                lms.display_books()
+            elif choice == "4":
+                print("\nPatrons: ")
+                lms.display_patrons()
+            elif choice == "5":
+                lms.current_user = None
+                print("Logged out successfully!")
+            else:
+                print("Invalid choice. Please try again.")
+if __name__ == "__main__":
+    main()
 
 Book1 = Book("Hello World", "May Chen", "111111111111", 5)
 print("Book details: ")
