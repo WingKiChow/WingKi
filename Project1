@@ -176,7 +176,7 @@ class LibraryMangementSystem:
         print(f"Welcoms, {self.current_user.username}! Ypu are logged in as a {self.current_user.role}.")
 
 def main():
-    lms = LibraryMangementSystem
+    lms = LibraryMangementSystem()
 
     while True:
         if not lms.current_user:
@@ -251,7 +251,7 @@ class LibraryManagementSystem:
         return self.current_user.role == Role.ADMINISTRATOR if self.current_user else False
 
 def main():
-    lms = LibraryMangementSystem
+    lms = LibraryMangementSystem()
 
     while True:
         if not lms.current_user:
