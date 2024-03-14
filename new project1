@@ -1,0 +1,75 @@
+class Book:
+    def __init__(self, title, author, isbn, quantity):
+        self.title = title
+        self.author = author
+        self.isbn = isbn
+        self.quantity = quantity
+
+    def add_book(self, quantity):
+        self.quantity += quantity
+
+    def update_book(self, title = None, author = None, isbn = None, quantity = None):
+        if title:
+            self.title = title
+        if author:
+            self.author = author
+        if isbn:
+            self.isbn = isbn
+        if quantity is not None:
+            self.quantity = quantity
+
+    def remove_book(self):
+        self.quantity = 0
+        print("Book removed from library.")
+
+    def display_book_details(self):
+        print("Title: ", self.title)
+        print("Author: ", self.author)
+        print("ISBN: ", self.isbn)
+        print("Quantity: ", self.quantity)
+
+class Patron:
+    def __init__(self, name, id, contact_info):
+        self.name = name
+        self.id = id
+        self.contact_info = contact_info
+
+    def add_patron(self, name, id, contact_info):
+        self.name = name
+        self.id = id
+        self.contact_info = contact_info
+
+    def update_patron(self, new_contact_info = None):
+        self.contact_info = new_contact_info
+
+    def remove_patron(self):
+        self.name = ""
+        self.id = ""
+        self.contact_info = ""
+        print("Patron removed from library.")
+
+    def display_patron_details(self):
+        print("Name: ", self.name)
+        print("ID: ", self.id)
+        print("Contact information: ", self.contact_info)
+
+
+
+Book1 = Book("Hello World", "May Chen", "111111111111", 5)
+print("Book details: ")
+Book1.display_book_details()
+Book1.add_book(5)
+print("\nAfter adding 5 copies: ")
+Book1.display_book_details()
+Book1.update_book(author = "James Chen", quantity = 15)
+print("\nAfter updating author and quantity: ")
+Book1.display_book_details()
+Patron1 = Patron("John Chen", "111111111", "john@gmail.com")
+print("Patron Details: ")
+Patron1.display_patron_details()
+Patron1.update_patron(new_contact_info = "johnchen@gmail.com")
+print("\nAfter updating contact information: ")
+Patron1.display_patron_details()
+Patron1.remove_patron()
+Patron2 = Patron("May Chen", "2222222222", "may@gmail.com")
+Patron2.display_patron_details()
