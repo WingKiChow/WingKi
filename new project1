@@ -53,6 +53,39 @@ class Patron:
         print("ID: ", self.id)
         print("Contact information: ", self.contact_info)
 
+import datetime
+
+class Transaction:
+    def __init__(self, book, patron):
+        self.book = book
+        self.patron = patron
+        self.checkin_book = None
+        self.checkout_book = datetime.datetime.now()
+        self.due_date = None
+        self.return_date = None
+        self.fine = 0
+
+    def checkin_book(self, checkin_book):
+        self.checkin_book = checkin_book
+
+    def checkout_book(self, days = 14):
+        self.due_date = self.checkout_date + datetime.timedelta(days = days)
+        print(f"{self.patron.name} return '{self.book.title}'. Due date: {self.due_date.strftime('%Y-%m-%d')}")
+
+    def return_book(self, return_date):
+        self.return_date = datetime.datetime.now()
+        if self.return_date > self.due_date:
+            overdue_date = (self.return_date - self.due_date).days
+            self.fine = overdue_date * 0.5
+            # $0.5 per day if over the due date
+
+    def display_details(self):
+        print(f"Book: {self.book}")
+        print(f"User: {self.user}")
+        print(f"Checkout Date: {self.checkout_date}")
+        print(f"Due Date: {self.due_date}")
+        print(f"Return Date: {self.return_date}")
+        print(f"Fine: {self.fine}")
 
 
 Book1 = Book("Hello World", "May Chen", "111111111111", 5)
@@ -73,3 +106,8 @@ Patron1.display_patron_details()
 Patron1.remove_patron()
 Patron2 = Patron("May Chen", "2222222222", "may@gmail.com")
 Patron2.display_patron_details()
+transaction1 = Transaction(Book1, Patron1)
+transaction1.checkin_book()
+transaction1.checkout_book()
+transaction1.return_book()
+transaction1.display_details()
