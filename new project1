@@ -59,33 +59,40 @@ class Transaction:
     def __init__(self, book, patron):
         self.book = book
         self.patron = patron
-        self.checkin_book = None
-        self.checkout_book = datetime.datetime.now()
+        self.checkout_date = datetime.datetime.now()
         self.due_date = None
         self.return_date = None
         self.fine = 0
 
-    def checkin_book(self, checkin_book):
-        self.checkin_book = checkin_book
+    def checkin_book(self):
+        self.book.quantity += 1
+        print(f"Book '{self.book.title}' checked in.")
 
-    def checkout_book(self, days = 14):
-        self.due_date = self.checkout_date + datetime.timedelta(days = days)
-        print(f"{self.patron.name} return '{self.book.title}'. Due date: {self.due_date.strftime('%Y-%m-%d')}")
+    def checkout_book(self, days=14):
+        if self.book.quantity > 0:
+            self.book.quantity -= 1
+            self.due_date = self.checkout_date + datetime.timedelta(days=days)
+            print(f"{self.patron.name} checked out '{self.book.title}'. Due date: {self.due_date.strftime('%Y-%m-%d')}")
+        else:
+            print("Sorry, the book is not available for checkout.")
 
-    def return_book(self, return_date):
+    def return_book(self):
         self.return_date = datetime.datetime.now()
         if self.return_date > self.due_date:
-            overdue_date = (self.return_date - self.due_date).days
-            self.fine = overdue_date * 0.5
-            # $0.5 per day if over the due date
+            overdue_days = (self.return_date - self.due_date).days
+            self.fine = overdue_days * 0.5
+            print(f"{self.patron.name} returned '{self.book.title}' {overdue_days} days overdue. Fine: ${self.fine:.2f}")
+        else:
+            print(f"{self.patron.name} returned '{self.book.title}' on time.")
 
     def display_details(self):
-        print(f"Book: {self.book}")
-        print(f"User: {self.user}")
-        print(f"Checkout Date: {self.checkout_date}")
-        print(f"Due Date: {self.due_date}")
-        print(f"Return Date: {self.return_date}")
-        print(f"Fine: {self.fine}")
+        print("Book:", self.book.title)
+        print("User:", self.patron.name)
+        print("Checkout Date:", self.checkout_date.strftime('%Y-%m-%d'))
+        print("Due Date:", self.due_date.strftime('%Y-%m-%d') if self.due_date else "Not checked out")
+        print("Return Date:", self.return_date.strftime('%Y-%m-%d') if self.return_date else "Not returned")
+        print("Fine: $", self.fine)
+
 
 
 Book1 = Book("Hello World", "May Chen", "111111111111", 5)
@@ -110,4 +117,10 @@ transaction1 = Transaction(Book1, Patron1)
 transaction1.checkin_book()
 transaction1.checkout_book()
 transaction1.return_book()
-transaction1.display_details()
+Book1.display_book_details()
+transaction2 = Transaction(Book1, Patron1)
+transaction2.checkin_book()
+Book1.display_book_details()
+transaction3 = Transaction(Book1, Patron1)
+transaction3.checkout_book()
+Book1.display_book_details()
