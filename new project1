@@ -93,6 +93,46 @@ class Transaction:
         print("Return Date:", self.return_date.strftime('%Y-%m-%d') if self.return_date else "Not returned")
         print("Fine: $", self.fine)
 
+class Library:
+    def __init__(self):
+        self.books = {}
+        self.patrons = {}
+        self.transactions = []
+
+    def add_book(self, book):
+        self.books[book.isbn] = book
+
+    def remove_book(self, isbn):
+        if isbn in self.books:
+            del self.books[isbn]
+            print("Book removed from the library.")
+        else:
+            print("Book not found in the library.")
+
+    def add_patron(self, patron):
+        self.patrons[patron.id] = patron
+
+    def remove_patron(self, id):
+        if id in self.patrons:
+            del self.patrons[id]
+            print("Patron removed from library.")
+        else:
+            print("Patron not found in library.")
+
+    def search_books(self, keyword):
+        found_books = []
+        for book in self.books.values():
+            if keyword.lower() in book.title.lower() or keyword.lower() in book.author.lower():
+                found_books.append(book)
+        return found_books
+
+    def add_transaction(self, transaction):
+        self.transactions.append(transaction)
+
+    def generate_reports(self):
+        # Implement report generation logic here
+        pass
+
 
 
 Book1 = Book("Hello World", "May Chen", "111111111111", 5)
@@ -104,6 +144,7 @@ Book1.display_book_details()
 Book1.update_book(author = "James Chen", quantity = 15)
 print("\nAfter updating author and quantity: ")
 Book1.display_book_details()
+
 Patron1 = Patron("John Chen", "111111111", "john@gmail.com")
 print("Patron Details: ")
 Patron1.display_patron_details()
@@ -113,6 +154,7 @@ Patron1.display_patron_details()
 Patron1.remove_patron()
 Patron2 = Patron("May Chen", "2222222222", "may@gmail.com")
 Patron2.display_patron_details()
+
 transaction1 = Transaction(Book1, Patron1)
 transaction1.checkin_book()
 transaction1.checkout_book()
@@ -124,3 +166,17 @@ Book1.display_book_details()
 transaction3 = Transaction(Book1, Patron1)
 transaction3.checkout_book()
 Book1.display_book_details()
+
+library = Library()
+library.add_book(Book1)
+library.add_patron(Patron1)
+found_books = library.search_books("Hello World")
+for book in found_books:
+    print(book.title)
+library.remove_book("111111111111")
+library.remove_patron("111111111")
+transaction = Transaction(Book1, Patron1)
+library.add_transaction(transaction)
+transaction.checkout_book()
+transaction.checkin_book()
+library.generate_reports()
